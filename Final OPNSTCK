@@ -696,34 +696,174 @@ Could not find resource cirros-0.3.4-x86_64-disk
 
 
 
+[root@CONTROLLER ~(keystone_admin)]# openstack network list | grep -i private | awk {'print $2'}
+62aaef17-1f53-4951-92b3-68ed0fb98a56
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack image list
++--------------------------------------+--------------------------+--------+
+| ID                                   | Name                     | Status |
++--------------------------------------+--------------------------+--------+
+| 4c290084-ffac-4306-b029-b1169c2d9d49 | cirros-0.3.4-x86_64-disk | active |
++--------------------------------------+--------------------------+--------+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack image list | grep -i 'cirros' | awk {'print $2'}
+4c290084-ffac-4306-b029-b1169c2d9d49
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack flavor list
++----+-----------+-------+------+-----------+-------+-----------+
+| ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
++----+-----------+-------+------+-----------+-------+-----------+
+| 1  | m1.tiny   |   512 |    1 |         0 |     1 | True      |
+| 2  | m1.small  |  2048 |   20 |         0 |     1 | True      |
+| 3  | m1.medium |  4096 |   40 |         0 |     2 | True      |
+| 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
+| 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
++----+-----------+-------+------+-----------+-------+-----------+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack flavor list | grep -i 'tiny' | awk {'print $2'}
+1
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# NET=$(openstack network list | grep -i private | awk {'print $2'})
+
+[root@CONTROLLER ~(keystone_admin)]# GLANCE=$(openstack image list | grep -i 'cirros' | awk {'print $2'})
+
+[root@CONTROLLER ~(keystone_admin)]# FLAVOR=$(openstack flavor list | grep -i 'tiny' | awk {'print $2'})
+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# x=$(date +"%Y-%m-%d_%H-%M-%S")
+
+[root@CONTROLLER ~(keystone_admin)]# nova boot --flavor $FLAVOR --image $GLANCE --nic net-id=$NET --security-groups secgroup1 cirros_$x --poll
++--------------------------------------+-----------------------------------------------------------------+
+| Property                             | Value                                                           |
++--------------------------------------+-----------------------------------------------------------------+
+| OS-DCF:diskConfig                    | MANUAL                                                          |
+| OS-EXT-AZ:availability_zone          |                                                                 |
+| OS-EXT-SRV-ATTR:host                 | -                                                               |
+| OS-EXT-SRV-ATTR:hostname             | cirros-2019-12-27-09-20-48                                      |
+| OS-EXT-SRV-ATTR:hypervisor_hostname  | -                                                               |
+| OS-EXT-SRV-ATTR:instance_name        |                                                                 |
+| OS-EXT-SRV-ATTR:kernel_id            |                                                                 |
+| OS-EXT-SRV-ATTR:launch_index         | 0                                                               |
+| OS-EXT-SRV-ATTR:ramdisk_id           |                                                                 |
+| OS-EXT-SRV-ATTR:reservation_id       | r-j9aolpg1                                                      |
+| OS-EXT-SRV-ATTR:root_device_name     | -                                                               |
+| OS-EXT-SRV-ATTR:user_data            | -                                                               |
+| OS-EXT-STS:power_state               | 0                                                               |
+| OS-EXT-STS:task_state                | scheduling                                                      |
+| OS-EXT-STS:vm_state                  | building                                                        |
+| OS-SRV-USG:launched_at               | -                                                               |
+| OS-SRV-USG:terminated_at             | -                                                               |
+| accessIPv4                           |                                                                 |
+| accessIPv6                           |                                                                 |
+| adminPass                            | 52YsK3TEH2zz                                                    |
+| config_drive                         |                                                                 |
+| created                              | 2019-12-27T03:52:43Z                                            |
+| description                          | -                                                               |
+| flavor:disk                          | 1                                                               |
+| flavor:ephemeral                     | 0                                                               |
+| flavor:extra_specs                   | {}                                                              |
+| flavor:original_name                 | m1.tiny                                                         |
+| flavor:ram                           | 512                                                             |
+| flavor:swap                          | 0                                                               |
+| flavor:vcpus                         | 1                                                               |
+| hostId                               |                                                                 |
+| host_status                          |                                                                 |
+| id                                   | 18cd79cf-e782-4857-abfe-3778587bb6ea                            |
+| image                                | cirros-0.3.4-x86_64-disk (4c290084-ffac-4306-b029-b1169c2d9d49) |
+| key_name                             | -                                                               |
+| locked                               | False                                                           |
+| metadata                             | {}                                                              |
+| name                                 | cirros_2019-12-27_09-20-48                                      |
+| os-extended-volumes:volumes_attached | []                                                              |
+| progress                             | 0                                                               |
+| security_groups                      | secgroup1                                                       |
+| server_groups                        | []                                                              |
+| status                               | BUILD                                                           |
+| tags                                 | []                                                              |
+| tenant_id                            | ca1aee90410c459484516fca84042198                                |
+| trusted_image_certificates           | -                                                               |
+| updated                              | 2019-12-27T03:52:44Z                                            |
+| user_id                              | d1f167eedd6f46a6b91b43f7d39c943c                                |
++--------------------------------------+-----------------------------------------------------------------+
+
+Server building... 0% complete
+
+Error building server
+ERROR (ResourceInErrorState): 
+[root@CONTROLLER ~(keystone_admin)]# openstack server list
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| ID                                   | Name                       | Status | Networks | Image                    | Flavor  |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| 18cd79cf-e782-4857-abfe-3778587bb6ea | cirros_2019-12-27_09-20-48 | ERROR  |          | cirros-0.3.4-x86_64-disk | m1.tiny |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+[root@CONTROLLER ~(keystone_admin)]# 
 
 
 
 
 
+[root@CONTROLLER ~(keystone_admin)]# nova service-list
++--------------------------------------+------------------+--------------------------+----------+---------+-------+----------------------------+-----------------+-------------+
+| Id                                   | Binary           | Host                     | Zone     | Status  | State | Updated_at                 | Disabled Reason | Forced down |
++--------------------------------------+------------------+--------------------------+----------+---------+-------+----------------------------+-----------------+-------------+
+| 59ac5735-39ad-4f34-a8a4-54149a6d1c6a | nova-conductor   | CONTROLLER.packstack.com | internal | enabled | up    | 2019-12-27T03:58:58.000000 | -               | False       |
+| 0e6ce7b2-5f91-455e-9d6b-1667505cd926 | nova-scheduler   | CONTROLLER.packstack.com | internal | enabled | up    | 2019-12-27T03:58:58.000000 | -               | False       |
+| bd47a217-ab5d-440f-ac09-c3e0e5297e65 | nova-consoleauth | CONTROLLER.packstack.com | internal | enabled | up    | 2019-12-27T03:58:58.000000 | -               | False       |
+| 5d96e873-eb59-498c-b82c-77d0b6af9909 | nova-compute     | CONTROLLER.packstack.com | nova     | enabled | up    | 2019-12-27T03:58:59.000000 | -               | False       |
++--------------------------------------+------------------+--------------------------+----------+---------+-------+----------------------------+-----------------+-------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+[root@CONTROLLER ~(keystone_admin)]# hostname
+CONTROLLER.packstack.com
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack server list
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| ID                                   | Name                       | Status | Networks | Image                    | Flavor  |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| 8c37d23d-762f-40f3-87c9-60647403390a | new1                       | ERROR  |          |                          | m1.tiny |
+| 84bda48c-478f-4958-85e9-0dc0bd4238bf | cirros_2019-12-27_09-20-48 | ERROR  |          | cirros-0.3.4-x86_64-disk | m1.tiny |
+| 18cd79cf-e782-4857-abfe-3778587bb6ea | cirros_2019-12-27_09-20-48 | ERROR  |          | cirros-0.3.4-x86_64-disk | m1.tiny |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
 
 
 
 
+[root@CONTROLLER ~(keystone_admin)]# openstack server delete 18cd79cf-e782-4857-abfe-3778587bb6ea
+[root@CONTROLLER ~(keystone_admin)]# openstack server list
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| ID                                   | Name                       | Status | Networks | Image                    | Flavor  |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+| 8c37d23d-762f-40f3-87c9-60647403390a | new1                       | ERROR  |          |                          | m1.tiny |
+| 84bda48c-478f-4958-85e9-0dc0bd4238bf | cirros_2019-12-27_09-20-48 | ERROR  |          | cirros-0.3.4-x86_64-disk | m1.tiny |
++--------------------------------------+----------------------------+--------+----------+--------------------------+---------+
+[root@CONTROLLER ~(keystone_admin)]# 
 
 
 
 
+[root@CONTROLLER ~(keystone_admin)]# openstack server delete 8c37d23d-762f-40f3-87c9-60647403390a
+[root@CONTROLLER ~(keystone_admin)]# openstack server delete 84bda48c-478f-4958-85e9-0dc0bd4238bf
+[root@CONTROLLER ~(keystone_admin)]# openstack server list
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[root@CONTROLLER ~(keystone_admin)]# 
 
 
 

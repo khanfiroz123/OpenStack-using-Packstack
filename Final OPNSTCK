@@ -1,0 +1,815 @@
+[root@CONTROLLER ~(keystone_admin)]# openstack network create private
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                     | Value                                                                                                                                                                                       |
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up            | UP                                                                                                                                                                                          |
+| availability_zone_hints   |                                                                                                                                                                                             |
+| availability_zones        |                                                                                                                                                                                             |
+| created_at                | 2019-12-26T16:08:02Z                                                                                                                                                                        |
+| description               |                                                                                                                                                                                             |
+| dns_domain                | None                                                                                                                                                                                        |
+| id                        | 62aaef17-1f53-4951-92b3-68ed0fb98a56                                                                                                                                                        |
+| ipv4_address_scope        | None                                                                                                                                                                                        |
+| ipv6_address_scope        | None                                                                                                                                                                                        |
+| is_default                | False                                                                                                                                                                                       |
+| is_vlan_transparent       | None                                                                                                                                                                                        |
+| location                  | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| mtu                       | 1442                                                                                                                                                                                        |
+| name                      | private                                                                                                                                                                                     |
+| port_security_enabled     | True                                                                                                                                                                                        |
+| project_id                | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| provider:network_type     | geneve                                                                                                                                                                                      |
+| provider:physical_network | None                                                                                                                                                                                        |
+| provider:segmentation_id  | 77                                                                                                                                                                                          |
+| qos_policy_id             | None                                                                                                                                                                                        |
+| revision_number           | 2                                                                                                                                                                                           |
+| router:external           | Internal                                                                                                                                                                                    |
+| segments                  | None                                                                                                                                                                                        |
+| shared                    | False                                                                                                                                                                                       |
+| status                    | ACTIVE                                                                                                                                                                                      |
+| subnets                   |                                                                                                                                                                                             |
+| tags                      |                                                                                                                                                                                             |
+| updated_at                | 2019-12-26T16:08:02Z                                                                                                                                                                        |
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+---------+
+| ID                                   | Name    | Subnets |
++--------------------------------------+---------+---------+
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private |         |
++--------------------------------------+---------+---------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet list
+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet create subpriv --network private --subnet-range 10.10.10.0/24
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| allocation_pools  | 10.10.10.2-10.10.10.254                                                                                                                                                                     |
+| cidr              | 10.10.10.0/24                                                                                                                                                                               |
+| created_at        | 2019-12-26T16:15:08Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| dns_nameservers   |                                                                                                                                                                                             |
+| enable_dhcp       | True                                                                                                                                                                                        |
+| gateway_ip        | 10.10.10.1                                                                                                                                                                                  |
+| host_routes       |                                                                                                                                                                                             |
+| id                | 85aec093-350c-444e-8a1b-81fe5629adf1                                                                                                                                                        |
+| ip_version        | 4                                                                                                                                                                                           |
+| ipv6_address_mode | None                                                                                                                                                                                        |
+| ipv6_ra_mode      | None                                                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | subpriv                                                                                                                                                                                     |
+| network_id        | 62aaef17-1f53-4951-92b3-68ed0fb98a56                                                                                                                                                        |
+| prefix_length     | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| revision_number   | 0                                                                                                                                                                                           |
+| segment_id        | None                                                                                                                                                                                        |
+| service_types     |                                                                                                                                                                                             |
+| subnetpool_id     | None                                                                                                                                                                                        |
+| tags              |                                                                                                                                                                                             |
+| updated_at        | 2019-12-26T16:15:08Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet list
++--------------------------------------+---------+--------------------------------------+---------------+
+| ID                                   | Name    | Network                              | Subnet        |
++--------------------------------------+---------+--------------------------------------+---------------+
+| 85aec093-350c-444e-8a1b-81fe5629adf1 | subpriv | 62aaef17-1f53-4951-92b3-68ed0fb98a56 | 10.10.10.0/24 |
++--------------------------------------+---------+--------------------------------------+---------------+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network create khan
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                     | Value                                                                                                                                                                                       |
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up            | UP                                                                                                                                                                                          |
+| availability_zone_hints   |                                                                                                                                                                                             |
+| availability_zones        |                                                                                                                                                                                             |
+| created_at                | 2019-12-26T16:19:23Z                                                                                                                                                                        |
+| description               |                                                                                                                                                                                             |
+| dns_domain                | None                                                                                                                                                                                        |
+| id                        | 57ef7995-e408-4c64-8471-cdeeda74e4f0                                                                                                                                                        |
+| ipv4_address_scope        | None                                                                                                                                                                                        |
+| ipv6_address_scope        | None                                                                                                                                                                                        |
+| is_default                | False                                                                                                                                                                                       |
+| is_vlan_transparent       | None                                                                                                                                                                                        |
+| location                  | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| mtu                       | 1442                                                                                                                                                                                        |
+| name                      | khan                                                                                                                                                                                        |
+| port_security_enabled     | True                                                                                                                                                                                        |
+| project_id                | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| provider:network_type     | geneve                                                                                                                                                                                      |
+| provider:physical_network | None                                                                                                                                                                                        |
+| provider:segmentation_id  | 70                                                                                                                                                                                          |
+| qos_policy_id             | None                                                                                                                                                                                        |
+| revision_number           | 2                                                                                                                                                                                           |
+| router:external           | Internal                                                                                                                                                                                    |
+| segments                  | None                                                                                                                                                                                        |
+| shared                    | False                                                                                                                                                                                       |
+| status                    | ACTIVE                                                                                                                                                                                      |
+| subnets                   |                                                                                                                                                                                             |
+| tags                      |                                                                                                                                                                                             |
+| updated_at                | 2019-12-26T16:19:24Z                                                                                                                                                                        |
++---------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 57ef7995-e408-4c64-8471-cdeeda74e4f0 | khan    |                                      |
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
++--------------------------------------+---------+--------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet create subkhan --network khan --subnet-range 20.20.20.0/24
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| allocation_pools  | 20.20.20.2-20.20.20.254                                                                                                                                                                     |
+| cidr              | 20.20.20.0/24                                                                                                                                                                               |
+| created_at        | 2019-12-26T16:20:57Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| dns_nameservers   |                                                                                                                                                                                             |
+| enable_dhcp       | True                                                                                                                                                                                        |
+| gateway_ip        | 20.20.20.1                                                                                                                                                                                  |
+| host_routes       |                                                                                                                                                                                             |
+| id                | 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf                                                                                                                                                        |
+| ip_version        | 4                                                                                                                                                                                           |
+| ipv6_address_mode | None                                                                                                                                                                                        |
+| ipv6_ra_mode      | None                                                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | subkhan                                                                                                                                                                                     |
+| network_id        | 57ef7995-e408-4c64-8471-cdeeda74e4f0                                                                                                                                                        |
+| prefix_length     | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| revision_number   | 0                                                                                                                                                                                           |
+| segment_id        | None                                                                                                                                                                                        |
+| service_types     |                                                                                                                                                                                             |
+| subnetpool_id     | None                                                                                                                                                                                        |
+| tags              |                                                                                                                                                                                             |
+| updated_at        | 2019-12-26T16:20:57Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 57ef7995-e408-4c64-8471-cdeeda74e4f0 | khan    | 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf |
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet list
++--------------------------------------+---------+--------------------------------------+---------------+
+| ID                                   | Name    | Network                              | Subnet        |
++--------------------------------------+---------+--------------------------------------+---------------+
+| 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf | subkhan | 57ef7995-e408-4c64-8471-cdeeda74e4f0 | 20.20.20.0/24 |
+| 85aec093-350c-444e-8a1b-81fe5629adf1 | subpriv | 62aaef17-1f53-4951-92b3-68ed0fb98a56 | 10.10.10.0/24 |
++--------------------------------------+---------+--------------------------------------+---------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router create router1
++-------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field                   | Value                                                                                                                                                                                       |
++-------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| admin_state_up          | UP                                                                                                                                                                                          |
+| availability_zone_hints |                                                                                                                                                                                             |
+| availability_zones      |                                                                                                                                                                                             |
+| created_at              | 2019-12-26T16:51:03Z                                                                                                                                                                        |
+| description             |                                                                                                                                                                                             |
+| distributed             | False                                                                                                                                                                                       |
+| external_gateway_info   | None                                                                                                                                                                                        |
+| flavor_id               | None                                                                                                                                                                                        |
+| ha                      | False                                                                                                                                                                                       |
+| id                      | 0ec3e69e-4ff4-4107-b274-95e101cf18f0                                                                                                                                                        |
+| location                | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name                    | router1                                                                                                                                                                                     |
+| project_id              | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| revision_number         | 1                                                                                                                                                                                           |
+| routes                  |                                                                                                                                                                                             |
+| status                  | ACTIVE                                                                                                                                                                                      |
+| tags                    |                                                                                                                                                                                             |
+| updated_at              | 2019-12-26T16:51:03Z                                                                                                                                                                        |
++-------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+--------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# openstack router list
++--------------------------------------+---------+--------+-------+----------------------------------+-------------+-------+
+| ID                                   | Name    | Status | State | Project                          | Distributed | HA    |
++--------------------------------------+---------+--------+-------+----------------------------------+-------------+-------+
+| 0ec3e69e-4ff4-4107-b274-95e101cf18f0 | router1 | ACTIVE | UP    | ca1aee90410c459484516fca84042198 | False       | False |
++--------------------------------------+---------+--------+-------+----------------------------------+-------------+-------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router show 0ec3e69e-4ff4-4107-b274-95e101cf18f0
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router show router1
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router show router1 -c interfaces_info
++-----------------+-------+
+| Field           | Value |
++-----------------+-------+
+| interfaces_info | []    |
++-----------------+-------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router add subnet router1 subpriv
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router show router1 -c interfaces_info
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------+
+| Field           | Value                                                                                                                                  |
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------+
+| interfaces_info | [{"subnet_id": "85aec093-350c-444e-8a1b-81fe5629adf1", "ip_address": "10.10.10.1", "port_id": "25f43aa7-5bdd-4d64-9c60-d05c85e8439b"}] |
++-----------------+----------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack router add subnet router1 subkhan
+[root@CONTROLLER ~(keystone_admin)]# openstack router show router1 -c interfaces_info
++-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field           | Value                                                                                                                                                                                                                                                                        |
++-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| interfaces_info | [{"subnet_id": "85aec093-350c-444e-8a1b-81fe5629adf1", "ip_address": "10.10.10.1", "port_id": "25f43aa7-5bdd-4d64-9c60-d05c85e8439b"}, {"subnet_id": "7e4d3310-439f-49b2-8e9f-3a4dd073ceaf", "ip_address": "20.20.20.1", "port_id": "62f39042-7c99-41e5-941b-5785ebdc29cd"}] |
++-----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# neutron net-create public --router:external --provider:network_type flat --provider:physical_network datacentre
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2019-12-26T17:15:10Z                 |
+| description               |                                      |
+| id                        | 48f82054-fcc8-4f71-92f3-963fe79d6951 |
+| ipv4_address_scope        |                                      |
+| ipv6_address_scope        |                                      |
+| is_default                | False                                |
+| mtu                       | 1500                                 |
+| name                      | public                               |
+| port_security_enabled     | True                                 |
+| project_id                | ca1aee90410c459484516fca84042198     |
+| provider:network_type     | flat                                 |
+| provider:physical_network | datacentre                           |
+| provider:segmentation_id  |                                      |
+| qos_policy_id             |                                      |
+| revision_number           | 2                                    |
+| router:external           | True                                 |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| tenant_id                 | ca1aee90410c459484516fca84042198     |
+| updated_at                | 2019-12-26T17:15:10Z                 |
++---------------------------+--------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 48f82054-fcc8-4f71-92f3-963fe79d6951 | public  |                                      |
+| 57ef7995-e408-4c64-8471-cdeeda74e4f0 | khan    | 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf |
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]#  openstack subnet create subpub --network public --allocation-pool start=192.168.122.10,end=192.168.122.70 --dns-nameserver=192.168.122.1 --gateway=192.168.122.1 --subnet-range 192.168.122.0/24 
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| allocation_pools  | 192.168.122.10-192.168.122.70                                                                                                                                                               |
+| cidr              | 192.168.122.0/24                                                                                                                                                                            |
+| created_at        | 2019-12-26T17:22:55Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| dns_nameservers   | 192.168.122.1                                                                                                                                                                               |
+| enable_dhcp       | True                                                                                                                                                                                        |
+| gateway_ip        | 192.168.122.1                                                                                                                                                                               |
+| host_routes       |                                                                                                                                                                                             |
+| id                | 4ff5410b-b5f4-4e7d-9851-27d3f89e9510                                                                                                                                                        |
+| ip_version        | 4                                                                                                                                                                                           |
+| ipv6_address_mode | None                                                                                                                                                                                        |
+| ipv6_ra_mode      | None                                                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | subpub                                                                                                                                                                                      |
+| network_id        | 48f82054-fcc8-4f71-92f3-963fe79d6951                                                                                                                                                        |
+| prefix_length     | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| revision_number   | 0                                                                                                                                                                                           |
+| segment_id        | None                                                                                                                                                                                        |
+| service_types     |                                                                                                                                                                                             |
+| subnetpool_id     | None                                                                                                                                                                                        |
+| tags              |                                                                                                                                                                                             |
+| updated_at        | 2019-12-26T17:22:55Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 48f82054-fcc8-4f71-92f3-963fe79d6951 | public  | 4ff5410b-b5f4-4e7d-9851-27d3f89e9510 |
+| 57ef7995-e408-4c64-8471-cdeeda74e4f0 | khan    | 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf |
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack subnet list
++--------------------------------------+---------+--------------------------------------+------------------+
+| ID                                   | Name    | Network                              | Subnet           |
++--------------------------------------+---------+--------------------------------------+------------------+
+| 4ff5410b-b5f4-4e7d-9851-27d3f89e9510 | subpub  | 48f82054-fcc8-4f71-92f3-963fe79d6951 | 192.168.122.0/24 |
+| 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf | subkhan | 57ef7995-e408-4c64-8471-cdeeda74e4f0 | 20.20.20.0/24    |
+| 85aec093-350c-444e-8a1b-81fe5629adf1 | subpriv | 62aaef17-1f53-4951-92b3-68ed0fb98a56 | 10.10.10.0/24    |
++--------------------------------------+---------+--------------------------------------+------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# neutron net-update --router:external=true public
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Updated network: public
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# neutron router-gateway-set router1 public
+neutron CLI is deprecated and will be removed in the future. Use openstack CLI instead.
+Set gateway for router router1
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+
+rtt min/avg/max/mdev = 93.364/94.428/95.493/1.107 ms
+[root@CONTROLLER ~(keystone_admin)]# openstack security group list
++--------------------------------------+---------+------------------------+----------------------------------+------+
+| ID                                   | Name    | Description            | Project                          | Tags |
++--------------------------------------+---------+------------------------+----------------------------------+------+
+| 25b25311-ae1c-4a42-b632-bf56a79847bc | default | Default security group | ca1aee90410c459484516fca84042198 | []   |
+| df370f22-fd16-4b80-b72d-eeab2f396b10 | default | Default security group |                                  | []   |
++--------------------------------------+---------+------------------------+----------------------------------+------+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group create secgroup1
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field           | Value                                                                                                                                                                                       |
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at      | 2019-12-26T17:28:23Z                                                                                                                                                                        |
+| description     | secgroup1                                                                                                                                                                                   |
+| id              | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| location        | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name            | secgroup1                                                                                                                                                                                   |
+| project_id      | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| revision_number | 1                                                                                                                                                                                           |
+| rules           | created_at='2019-12-26T17:28:23Z', direction='egress', ethertype='IPv6', id='06c5a91e-85e0-496b-aefa-3f395f335973', updated_at='2019-12-26T17:28:23Z'                                       |
+|                 | created_at='2019-12-26T17:28:23Z', direction='egress', ethertype='IPv4', id='70788ec1-2817-4e01-92e8-fbcdb79aba00', updated_at='2019-12-26T17:28:23Z'                                       |
+| tags            | []                                                                                                                                                                                          |
+| updated_at      | 2019-12-26T17:28:23Z                                                                                                                                                                        |
++-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group list
++--------------------------------------+-----------+------------------------+----------------------------------+------+
+| ID                                   | Name      | Description            | Project                          | Tags |
++--------------------------------------+-----------+------------------------+----------------------------------+------+
+| 25b25311-ae1c-4a42-b632-bf56a79847bc | default   | Default security group | ca1aee90410c459484516fca84042198 | []   |
+| 497e0931-4c3d-4cec-95da-ebc848eef14d | secgroup1 | secgroup1              | ca1aee90410c459484516fca84042198 | []   |
+| df370f22-fd16-4b80-b72d-eeab2f396b10 | default   | Default security group |                                  | []   |
++--------------------------------------+-----------+------------------------+----------------------------------+------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group rule create secgroup1 --protocol icmp --prefix 0.0.0.0/0 --ingress
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2019-12-26T17:31:03Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| direction         | ingress                                                                                                                                                                                     |
+| ether_type        | IPv4                                                                                                                                                                                        |
+| id                | 91fdf015-934b-4d9f-9721-11e6d1e601f0                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | None                                                                                                                                                                                        |
+| port_range_max    | None                                                                                                                                                                                        |
+| port_range_min    | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| protocol          | icmp                                                                                                                                                                                        |
+| remote_group_id   | None                                                                                                                                                                                        |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                                                                   |
+| revision_number   | 0                                                                                                                                                                                           |
+| security_group_id | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| tags              | []                                                                                                                                                                                          |
+| updated_at        | 2019-12-26T17:31:03Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group rule create secgroup1 --protocol icmp --prefix 0.0.0.0/0 --egress
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2019-12-26T17:32:20Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| direction         | egress                                                                                                                                                                                      |
+| ether_type        | IPv4                                                                                                                                                                                        |
+| id                | 62ea96a7-2468-4692-843c-ecaab8c87585                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | None                                                                                                                                                                                        |
+| port_range_max    | None                                                                                                                                                                                        |
+| port_range_min    | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| protocol          | icmp                                                                                                                                                                                        |
+| remote_group_id   | None                                                                                                                                                                                        |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                                                                   |
+| revision_number   | 0                                                                                                                                                                                           |
+| security_group_id | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| tags              | []                                                                                                                                                                                          |
+| updated_at        | 2019-12-26T17:32:20Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]#  openstack security group rule create secgroup1 --protocol tcp --prefix 0.0.0.0/0 --ingress
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2019-12-26T17:33:48Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| direction         | ingress                                                                                                                                                                                     |
+| ether_type        | IPv4                                                                                                                                                                                        |
+| id                | 8ddeee05-852c-4a68-a4a6-8ffc268f5020                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | None                                                                                                                                                                                        |
+| port_range_max    | None                                                                                                                                                                                        |
+| port_range_min    | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| protocol          | tcp                                                                                                                                                                                         |
+| remote_group_id   | None                                                                                                                                                                                        |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                                                                   |
+| revision_number   | 0                                                                                                                                                                                           |
+| security_group_id | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| tags              | []                                                                                                                                                                                          |
+| updated_at        | 2019-12-26T17:33:48Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group rule create secgroup1 --protocol udp --prefix 0.0.0.0/0 --ingress
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2019-12-26T17:35:21Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| direction         | ingress                                                                                                                                                                                     |
+| ether_type        | IPv4                                                                                                                                                                                        |
+| id                | b5361c6a-35c8-43a6-ab13-dfd4f4ad8f9a                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | None                                                                                                                                                                                        |
+| port_range_max    | None                                                                                                                                                                                        |
+| port_range_min    | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| protocol          | udp                                                                                                                                                                                         |
+| remote_group_id   | None                                                                                                                                                                                        |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                                                                   |
+| revision_number   | 0                                                                                                                                                                                           |
+| security_group_id | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| tags              | []                                                                                                                                                                                          |
+| updated_at        | 2019-12-26T17:35:21Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# 
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# openstack security group rule create secgroup1 --protocol tcp --prefix 0.0.0.0/0 --egress
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                       |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| created_at        | 2019-12-26T17:36:47Z                                                                                                                                                                        |
+| description       |                                                                                                                                                                                             |
+| direction         | egress                                                                                                                                                                                      |
+| ether_type        | IPv4                                                                                                                                                                                        |
+| id                | 88ce6df8-6bb7-4c4a-a223-03cf04a8bb77                                                                                                                                                        |
+| location          | Munch({'project': Munch({'domain_name': 'Default', 'domain_id': None, 'name': 'admin', 'id': u'ca1aee90410c459484516fca84042198'}), 'cloud': '', 'region_name': 'RegionOne', 'zone': None}) |
+| name              | None                                                                                                                                                                                        |
+| port_range_max    | None                                                                                                                                                                                        |
+| port_range_min    | None                                                                                                                                                                                        |
+| project_id        | ca1aee90410c459484516fca84042198                                                                                                                                                            |
+| protocol          | tcp                                                                                                                                                                                         |
+| remote_group_id   | None                                                                                                                                                                                        |
+| remote_ip_prefix  | 0.0.0.0/0                                                                                                                                                                                   |
+| revision_number   | 0                                                                                                                                                                                           |
+| security_group_id | 497e0931-4c3d-4cec-95da-ebc848eef14d                                                                                                                                                        |
+| tags              | []                                                                                                                                                                                          |
+| updated_at        | 2019-12-26T17:36:47Z                                                                                                                                                                        |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[root@CONTROLLER ~(keystone_admin)]# reboot
+
+
+[root@CONTROLLER ~]# ping google.com
+PING google.com (172.217.166.78) 56(84) bytes of data.
+64 bytes from bom05s15-in-f14.1e100.net (172.217.166.78): icmp_seq=1 ttl=52 time=100 ms
+64 bytes from bom05s15-in-f14.1e100.net (172.217.166.78): icmp_seq=2 ttl=52 time=132 ms
+64 bytes from bom05s15-in-f14.1e100.net (172.217.166.78): icmp_seq=3 ttl=52 time=117 ms
+^C
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+rtt min/avg/max/mdev = 100.626/116.726/132.365/12.967 ms
+
+
+
+
+[root@CONTROLLER ~]# source keystonerc_admin 
+[root@CONTROLLER ~(keystone_admin)]# openstack image list
+
+[root@CONTROLLER ~(keystone_admin)]# if ! openstack image show cirros-0.3.4-x86_64-disk ; then   mkdir ~/cloudimages;   cd ~/cloudimages;   curl -o cirros-0.3.4-x86_64-disk.img     http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img;   glance image-create --container-format bare --disk-format qcow2 --name cirros-0.3.4-x86_64-disk --file cirros-0.3.4-x86_64-disk.img; fi
+Could not find resource cirros-0.3.4-x86_64-disk
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 12.6M  100 12.6M    0     0   676k      0  0:00:19  0:00:19 --:--:-- 1181k
++------------------+----------------------------------------------------------------------------------+
+| Property         | Value                                                                            |
++------------------+----------------------------------------------------------------------------------+
+| checksum         | ee1eca47dc88f4879d8a229cc70a07c6                                                 |
+| container_format | bare                                                                             |
+| created_at       | 2019-12-26T17:45:50Z                                                             |
+| disk_format      | qcow2                                                                            |
+| id               | 4c290084-ffac-4306-b029-b1169c2d9d49                                             |
+| min_disk         | 0                                                                                |
+| min_ram          | 0                                                                                |
+| name             | cirros-0.3.4-x86_64-disk                                                         |
+| os_hash_algo     | sha512                                                                           |
+| os_hash_value    | 1b03ca1bc3fafe448b90583c12f367949f8b0e665685979d95b004e48574b953316799e23240f4f7 |
+|                  | 39d1b5eb4c4ca24d38fdc6f4f9d8247a2bc64db25d6bbdb2                                 |
+| os_hidden        | False                                                                            |
+| owner            | ca1aee90410c459484516fca84042198                                                 |
+| protected        | False                                                                            |
+| size             | 13287936                                                                         |
+| status           | active                                                                           |
+| tags             | []                                                                               |
+| updated_at       | 2019-12-26T17:45:50Z                                                             |
+| virtual_size     | Not available                                                                    |
+| visibility       | shared                                                                           |
++------------------+----------------------------------------------------------------------------------+
+[root@CONTROLLER cloudimages(keystone_admin)]# openstack image list
++--------------------------------------+--------------------------+--------+
+| ID                                   | Name                     | Status |
++--------------------------------------+--------------------------+--------+
+| 4c290084-ffac-4306-b029-b1169c2d9d49 | cirros-0.3.4-x86_64-disk | active |
++--------------------------------------+--------------------------+--------+
+[root@CONTROLLER cloudimages(keystone_admin)]# 
+
+
+
+
+
+[root@CONTROLLER cloudimages(keystone_admin)]# openstack flavor list
++----+-----------+-------+------+-----------+-------+-----------+
+| ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
++----+-----------+-------+------+-----------+-------+-----------+
+| 1  | m1.tiny   |   512 |    1 |         0 |     1 | True      |
+| 2  | m1.small  |  2048 |   20 |         0 |     1 | True      |
+| 3  | m1.medium |  4096 |   40 |         0 |     2 | True      |
+| 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
+| 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
++----+-----------+-------+------+-----------+-------+-----------+
+[root@CONTROLLER cloudimages(keystone_admin)]# 
+
+
+
+
+
+
+
+
+[root@CONTROLLER cloudimages(keystone_admin)]# openstack flavor list
++----+-----------+-------+------+-----------+-------+-----------+
+| ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
++----+-----------+-------+------+-----------+-------+-----------+
+| 1  | m1.tiny   |   512 |    1 |         0 |     1 | True      |
+| 2  | m1.small  |  2048 |   20 |         0 |     1 | True      |
+| 3  | m1.medium |  4096 |   40 |         0 |     2 | True      |
+| 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
+| 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
++----+-----------+-------+------+-----------+-------+-----------+
+[root@CONTROLLER cloudimages(keystone_admin)]# 
+
+
+
+[root@CONTROLLER ~(keystone_admin)]# openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 48f82054-fcc8-4f71-92f3-963fe79d6951 | public  | 4ff5410b-b5f4-4e7d-9851-27d3f89e9510 |
+| 57ef7995-e408-4c64-8471-cdeeda74e4f0 | khan    | 7e4d3310-439f-49b2-8e9f-3a4dd073ceaf |
+| 62aaef17-1f53-4951-92b3-68ed0fb98a56 | private | 85aec093-350c-444e-8a1b-81fe5629adf1 |
++--------------------------------------+---------+--------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
